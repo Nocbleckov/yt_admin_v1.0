@@ -1,0 +1,45 @@
+body{
+	background-color: #424242;
+}
+
+.container{
+	margin-top: 15px;
+	width: 92%;
+}
+
+.navbar{
+	background-color: #212121 !important;
+}
+
+.nameUser{
+	border-style: hidden !important;
+	background-color: #212121 !important;
+	margin-left: 10px;
+	color: white;
+}
+
+.img-fluid{
+	width: 100%;
+	height: auto;
+}
+
+.card{
+	width: 100%;
+	height: 100%;
+}
+
+.img-item{
+	position: relative !important;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+}
+
+.row-list{
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+.videoDiv{
+	height: 300px;
+}
