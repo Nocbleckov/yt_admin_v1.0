@@ -1,33 +1,33 @@
 
-var semana = ["Domingo","Lunes","Martes","Jueves","Viernes","Sábado"];
-var mes = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Juliio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+var generateItem = function(id,item,callback){
 
-function generateItem(id,item,callback){
 	var snippet = item.snippet;
-
-	var nombreVideo = snippet.title;
-	var status = item.status.privacyStatus;
-
-	var fecha =  new Date(snippet.publishedAt);
-	var publicacion = semana[fecha.getDay()]+" "
+	//var nombreVideo = snippet.title;
+	//var status = item.status.privacyStatus;
+	//var fecha =  new Date(snippet.publishedAt);
+	/*var publicacion = semana[fecha.getDay()]+" "
 	+fecha.getDate()+" de "
 	+mes[fecha.getMonth()]+" del "
-	+fecha.getFullYear();
+	+fecha.getFullYear();*/
 
 	var src = snippet.thumbnails.medium.url;
 
-	return createRow(id,nombreVideo,status,publicacion,src,callback);
+	this.itemCreated = this.createRow(id,src,callback);
+
+
 }
 
-function createRow(id,nombreVideo,status,publicacion,src,callback){
+
+
+generateItem.prototype.createRow = function(id,src,callback){
 	var row = $("<div id='rowVideo'>");
 	row.attr({
 		'class':'row row-list',
 		'data-id':id
 	});
 
-	var img = createImg(id,src);
-	var infoVideo = createInfoVideo(id,nombreVideo,status,publicacion,callback);
+	var img = this.createImg(id,src);
+	var infoVideo = this.createInfoVideo(id,callback);
 
 	row.append(img);
 	row.append(infoVideo);
@@ -35,7 +35,7 @@ function createRow(id,nombreVideo,status,publicacion,src,callback){
 	return row;
 }
 
-function createImg(id,src){
+generateItem.prototype.createImg = function(id,src){
 	
 	var col = $("<div id='colImg"+id+"'>");
 	col.attr({class:'col-sm-3 col-md-3 col-lg-3'});
@@ -51,7 +51,8 @@ function createImg(id,src){
 	return col;
 }
 
-function createInfoVideo(id,nombreVideo,status,publicacion,callback){
+generateItem.prototype.createInfoVideo = function(id,callback){
+
 	var col = $("<div id='colInfo"+id+"'>");
 	col.attr({class:'col-sm-9 col-md-9 col-lg-9'});
 
@@ -61,9 +62,9 @@ function createInfoVideo(id,nombreVideo,status,publicacion,callback){
 	var cardBody = $("<div id='cardBody"+id+"'>");
 	cardBody.attr({class:'card-body'});
 
-	var titleVideo = $("<div id='titleVideo"+id+"'>");
-	titleVideo.attr({class:"card-title h4"});
-	titleVideo.append("Nombre del Video: "+nombreVideo);
+	this.titleVideo = $("<div id='titleVideo"+id+"'>");
+	this.titleVideo.attr({class:"card-title h4"});
+	//this.titleVideo.append("Nombre del Video: "+nombreVideo);
 
 	var cardContent = $("<div id='cardContent"+id+"'>");
 	cardContent.attr({class:'card-text'});
@@ -71,13 +72,13 @@ function createInfoVideo(id,nombreVideo,status,publicacion,callback){
 	var row = $("<div id='rowInfo"+id+"'>");
 	row.attr({class:'row'});
 
-	var colDuracion = $("<div id='colDuracion"+id+"'>");
-	colDuracion.attr({class:'col-sm-4 col-mg-4 col-lg-4'});
-	colDuracion.append("Status: "+status);
+	this.colStatus = $("<div id='colStatus"+id+"'>");
+	this.colStatus.attr({class:'col-sm-5 col-mg-5 col-lg-5'});
+	//this.colStatus.append("Status: "+status);
 
-	var colPublicacion = $("<div id='colPublicacion"+id+"'>");
-	colPublicacion.attr({class:'col-sm-8 col-mg-8 col-lg-8'});
-	colPublicacion.append("Fecha de publicación: "+publicacion);
+	this.colPublicacion = $("<div id='colPublicacion"+id+"'>");
+	this.colPublicacion.attr({class:'col-sm-7 col-mg-7 col-lg-7'});
+	//this.colPublicacion.append("Fecha de publicación: "+publicacion);
 
 	var footer = $("<div id='footer"+id+"'>");
 	footer.attr({class:'card-footer bg-transparent'});
@@ -87,18 +88,20 @@ function createInfoVideo(id,nombreVideo,status,publicacion,callback){
 	btnInfo.append("Editar Info");
 	btnInfo.on('click',callback.bind(this,id));
 
+
+
 	col.append(card);
 	card.append(cardBody);
 	card.append(footer);
 
 	footer.append(btnInfo);
 
-	cardBody.append(titleVideo);
+	cardBody.append(this.titleVideo);
 	cardBody.append(cardContent);
 
 	cardContent.append(row);
-	row.append(colDuracion);
-	row.append(colPublicacion);
+	row.append(this.colStatus);
+	row.append(this.colPublicacion);
 
 	return col;
 }

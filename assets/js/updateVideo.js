@@ -1,8 +1,8 @@
-var updateData = function(params,data,access_token){
+var updateData = function(params,data,callback){
 	this.gapi = gapi;
 	this.path = "/youtube/v3/videos";
 	this.method = "PUT";
-	this.access_token = access_token;
+	this.access_token = data.access_token;
 
 	this.tags = ['youtube-video','api','test'];
 	this.categoryId = 22;
@@ -15,8 +15,13 @@ var updateData = function(params,data,access_token){
 			description: data.description,
 			tags: this.tags,
 			categoryId: this.categoryId
+		},
+		status:{
+			privacyStatus: 'public'
 		}
 	}
+
+	this.callback = callback;
 }
 
 updateData.prototype.updateInfo = function(){
@@ -30,8 +35,6 @@ updateData.prototype.updateInfo = function(){
 			'Authorization':'Bearer '+updateRequest.access_token
 		},
 		body: updateRequest.body,
-		callback: function(response){
-			console.log(response);
-		}
+		callback: updateRequest.callback.bind(this)
 	});
 }
