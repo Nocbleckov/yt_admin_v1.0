@@ -47,16 +47,27 @@ userGoogle.prototype.requestVideoPlayList = function (playlistId,pageToken,callb
 	if (pageToken) {
 		requestOptions.pageToken = pageToken;
 	}
-	var request = usuario.gapi.client.youtube.playlistItems.list(requestOptions);
+	//var request = usuario.gapi.client.youtube.playlistItems.list(requestOptions);
+
+	var request = gapi.client.request({
+		path: "youtube/v3/playlistItems",
+		method: "GET",
+		params: requestOptions,
+		headers:{
+			'Authorization':'Bearer '+ gapi.client.getToken().access_token
+		}
+	});
+
 	request.execute(function(response){
-		nextPageToken = response.result.nextPageToken;
+		//console.log(response);
+		/*nextPageToken = response.result.nextPageToken;
 		var nextVis = nextPageToken ? 'visible' : 'hidden';
 		//console.log("nextVis",nextVis);
 		prevPageToken = response.result.prevPageToken;
 		var prevVis = prevPageToken ? 'visible' : 'hidden';
-		//console.log("prevVis",prevVis);
+		//console.log("prevVis",prevVis);*/
 
-		var playlistItems = response.result.items;
+		var playlistItems = response.items;
 
 		if(playlistItems){
 			$.each(playlistItems, function(index,item){

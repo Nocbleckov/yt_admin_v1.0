@@ -4,6 +4,7 @@ var itemViewUpdate = function(video,index){
 
 	this.index = index;
 	this.video = video;
+	this.idVideo = video.snippet.resourceId.videoId;
 	
 
 	this.itemCreated = new generateItem(index,video,callback.bind(this));
@@ -16,9 +17,10 @@ var itemViewUpdate = function(video,index){
 	},video);
 }
 
-itemViewUpdate.prototype.callback = function(id){
+itemViewUpdate.prototype.callback = function(){
 	var View = this;
-	this.idVideo = this.video.snippet.resourceId.videoId;
+	console.log(View.video);
+	//this.idVideo = View.video.snippet.resourceId.videoId;
 	var idLabel = 'playerInDialog'+View.index;
 	this.reproductor = new reproductorYT(idLabel,View.idVideo);
 	this.dialog = bootbox.dialog({
@@ -45,6 +47,7 @@ itemViewUpdate.prototype.callback = function(id){
 itemViewUpdate.prototype.dialogCallback = function(){
 	var View = this;
 	this.reproductor.initReproductor();
+
 
 	var inTex_titulo = View.dialog.find('#tituloVideo').val(View.video.snippet.title);
 	var inTex_descripcion = View.dialog.find('#descripcionVideo').val(View.video.snippet.description);
@@ -82,10 +85,15 @@ itemViewUpdate.prototype.updateVideo = function(titulo,description,idVideo){
 	 	if( response.error){
 	 		alert("Error: "+response.error.code);
 	 	}else{
-	 		View.video.snippet.title = "Prueba 0001";
-	 		View.video.snippet.description = "Descripción de Prueba";
+	 		//View.video.snippet = response.snippet;
+	 		//View.idVideo = response.id;
+	 		View.idVideo = response.id;
+	 		View.video = response;
+	 		View.dataView.updateData(View.video);
 	 		View.dialog.modal('hide');
-	 		alert('Exito al cambiar la información');
+	 		setTimeout(function(){
+	 			alert('Exito al cambiar la información');
+	 		},400); 
 	 	}
 	 });
 	 update.updateInfo();

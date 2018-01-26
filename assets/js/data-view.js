@@ -17,9 +17,9 @@ var viewUpdater = function(view,data){
 
 viewUpdater.prototype.setData = function(){
 	var VwUpdater = this;
-	this.lbl_tituloVideo.append(VwUpdater.title);
-	this.lbl_privacidad.append(VwUpdater.privacidad);
-	this.lbl_fechaPublicacion.append(VwUpdater.publicacion);
+	this.lbl_tituloVideo.html("Titulo del Video: "+VwUpdater.title);
+	this.lbl_privacidad.html("Privacidad: "+VwUpdater.privacidad);
+	this.lbl_fechaPublicacion.html("Fecha de Publicación: "+VwUpdater.publicacion);
 }
 
 viewUpdater.prototype.updateData = function(data){
